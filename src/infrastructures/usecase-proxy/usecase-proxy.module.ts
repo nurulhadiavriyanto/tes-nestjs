@@ -5,6 +5,8 @@ import { UseCaseProxy } from './usecase-proxy';
 import { RepositoriesModule } from '../repositories/repository.module';
 import { GetAllUserUseCases } from 'src/applications/use-cases/user.usecase';
 import { CreateUserUseCases } from 'src/applications/use-cases/createUser.usecase';
+import { ItemRepositoryOrm } from '../repositories/item.repository';
+import { GetAllItemUseCases } from 'src/applications/use-cases/item.usecase';
 
 @Module({
     imports: [EnvironmentConfigModule, RepositoriesModule],
@@ -12,6 +14,7 @@ import { CreateUserUseCases } from 'src/applications/use-cases/createUser.usecas
   export class UsecaseProxyModule {
     static GET_ALL_USERS_USE_CASE = 'getAllUsersUsecaseProxy';
     static CREATE_USER_USE_CASE = 'createUserUsecaseProxy';
+    static GET_ALL_ITEMS_USE_CASE = 'getAllItemsUsecaseProxy';
   
     static register(): DynamicModule {
       return {
@@ -29,10 +32,17 @@ import { CreateUserUseCases } from 'src/applications/use-cases/createUser.usecas
             useFactory: (userRepository: UserRepositoryOrm) =>
               new UseCaseProxy(new CreateUserUseCases(userRepository)),
           },
+          {
+            inject: [ItemRepositoryOrm],
+            provide: UsecaseProxyModule.GET_ALL_ITEMS_USE_CASE,
+            useFactory: (itemRepository: ItemRepositoryOrm) =>
+              new UseCaseProxy(new GetAllItemUseCases(itemRepository)),
+          },
         ],
         exports: [
             UsecaseProxyModule.GET_ALL_USERS_USE_CASE,
             UsecaseProxyModule.CREATE_USER_USE_CASE,
+            UsecaseProxyModule.GET_ALL_ITEMS_USE_CASE,
         ],
       };
     }
