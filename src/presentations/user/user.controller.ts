@@ -1,11 +1,10 @@
 import * as bcrypt from 'bcrypt';
-import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Get, Inject, Post, ValidationPipe } from '@nestjs/common';
 import { UsecaseProxyModule } from 'src/infrastructures/usecase-proxy/usecase-proxy.module';
 import { UseCaseProxy } from 'src/infrastructures/usecase-proxy/usecase-proxy';
 import { GetAllUserUseCases } from 'src/applications/use-cases/user.usecase';
 import { CreateUserUseCases } from 'src/applications/use-cases/createUser.usecase';
 import { CreateUserDto } from './dto/create-user.dto';
-import { ValidationPipe } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
